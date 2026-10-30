@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080a0f" />
+    <title>Workspace · Voice → pi</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/workspace.css" />
+  </head>
+  <body>
+    <div class="files-app">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Back to voice chat">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="brand-copy">
+            <h1>Voice<span>→</span>pi</h1>
+            <p>Workspace files and editor.</p>
+          </div>
+        </a>
+        <div class="topbar-meta">
+          <a class="pill nav-pill" href="/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5" />
+              <path d="m11 18-6-6 6-6" />
+            </svg>
+            <span>Voice chat</span>
+          </a>
+          <span class="pill dim workspace-path" id="workspacePath">workspace</span>
+        </div>
+      </header>
+
+      <main class="files-layout">
+        <aside class="panel files-panel">
+          <div class="panel-head">
+            <span class="eyebrow">Workspace files</span>
+            <div class="files-head-actions">
+              <span class="file-count" id="fileCount">…</span>
+              <button class="btn small" id="refreshTree" type="button">Refresh</button>
+            </div>
+          </div>
+
+          <div class="file-tree" id="fileTree">
+            <div class="tree-empty">Loading files…</div>
+          </div>
+          <p class="tree-note" id="treeNote" hidden></p>
+        </aside>
+
+        <section class="panel editor-panel">
+          <div class="editor-head">
+            <div class="editor-title">
+              <span class="eyebrow">Editor</span>
+              <h2 id="fileName">Select a file</h2>
+              <p class="file-meta" id="fileMeta">Choose a file from the tree to view or edit it.</p>
+            </div>
+            <div class="editor-actions">
+              <button class="btn" id="reloadFile" type="button" disabled>Reload</button>
+              <button class="btn primary" id="saveFile" type="button" disabled>Save</button>
+            </div>
+          </div>
+
+          <div class="editor-body">
+            <textarea id="fileEditor" spellcheck="false" wrap="off" disabled aria-label="File contents"></textarea>
+            <div class="editor-empty" id="editorEmpty">
+              <div class="editor-empty-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3h8l4 4v14H6V3Z" />
+                  <path d="M14 3v4h4" />
+                </svg>
+              </div>
+              <h3>No file selected</h3>
+              <p>Pick a file from the workspace tree. Text files open in the editor; binary and large files can be downloaded.</p>
+            </div>
+            <div class="file-notice" id="fileNotice" hidden>
+              <div class="file-notice-mark" id="noticeMark" aria-hidden="true">!</div>
+              <h3 id="noticeTitle">File unavailable</h3>
+              <p id="noticeText"></p>
+              <a class="btn primary" id="downloadFile" href="#" download hidden>Download file</a>
+            </div>
+          </div>
+
+          <div class="editor-foot">
+            <span class="save-state saved" id="saveState" aria-live="polite">Ready</span>
+            <span id="cursorPosition">Ln 1, Col 1</span>
+          </div>
+        </section>
+      </main>
+
+      <div class="toast" id="toast" hidden></div>
+    </div>
+
+    <script src="/workspace.js" type="module"></script>
+  </body>
+</html>

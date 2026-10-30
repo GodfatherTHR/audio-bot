@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080a0f" />
+    <title>Voice → pi</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="brand-copy">
+            <h1>Voice<span>→</span>pi</h1>
+            <p>Local ears. Cloud brain. Real tools.</p>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <a class="pill nav-pill" href="/workspace" title="Browse and edit workspace files">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+            </svg>
+            <span>Workspace</span>
+          </a>
+          <span class="pill" id="modelBadge">ollama/beam:cloud</span>
+          <span class="pill dim" id="sessionBadge">session —</span>
+          <span class="health" id="healthDot" title="Checking services..."></span>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel voice-panel">
+          <div class="panel-head">
+            <span class="eyebrow">Voice input</span>
+            <span class="status" id="statusLabel">Ready</span>
+          </div>
+
+          <div class="lang-switch" id="langSwitch" role="group" aria-label="Spoken language">
+            <button type="button" data-lang="en" class="active" aria-pressed="true">English</button>
+            <button type="button" data-lang="bn" lang="bn" aria-pressed="false">বাংলা</button>
+          </div>
+
+          <div class="talk-wrap">
+            <div class="level-ring" id="levelRing" aria-hidden="true"></div>
+            <button class="talk" id="talkButton" type="button" aria-label="Hold to talk">
+              <span class="talk-glow" aria-hidden="true"></span>
+              <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" />
+                <path d="M5 11a7 7 0 0 0 14 0" />
+                <path d="M12 18v3" />
+                <path d="M8 21h8" />
+              </svg>
+              <span class="talk-label" id="talkLabel">Hold to talk</span>
+              <span class="talk-timer" id="recordTimer">00:00</span>
+            </button>
+          </div>
+
+          <p class="hint" id="voiceHint">Hold <kbd>Space</kbd> or press and hold the mic. Release to transcribe and run.</p>
+
+          <div class="transcript-card">
+            <div class="card-head">
+              <span id="transcriptLabel">Transcript</span>
+              <button class="link" id="clearTranscript" type="button">Clear</button>
+            </div>
+            <p class="transcript empty" id="transcript">Your words will appear here.</p>
+            <p class="transcript-foot" id="transcriptFoot">Voice prompts land here. Type in the chat panel.</p>
+          </div>
+
+          <div class="smallprint">
+            <span id="workspaceLabel">workspace</span>
+            <span id="privacyLabel">ASR stays on this machine</span>
+          </div>
+        </section>
+
+        <section class="panel agent-panel">
+          <div class="panel-head chat-head">
+            <div class="chat-title">
+              <span class="chat-title-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 3c.7 4.6 3.4 7.3 8 8-4.6.7-7.3 3.4-8 8-.7-4.6-3.4-7.3-8-8 4.6-.7 7.3-3.4 8-8Z" />
+                </svg>
+              </span>
+              <div>
+                <span class="eyebrow">Agent activity</span>
+                <span class="chat-subtitle" id="chatSubtitle">pi · beam:cloud</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="link" id="newSession" type="button">New session</button>
+              <button class="danger" id="abort" type="button" hidden>Stop</button>
+            </div>
+          </div>
+
+          <div class="chat-scroll" id="chatScroll">
+            <div class="chat-thread" id="chatThread">
+              <div class="chat-empty" id="chatEmpty">
+                <div class="chat-empty-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 3c.7 4.6 3.4 7.3 8 8-4.6.7-7.3 3.4-8 8-.7-4.6-3.4-7.3-8-8 4.6-.7 7.3-3.4 8-8Z" />
+                  </svg>
+                </div>
+                <p class="chat-empty-title">Ask pi to build something</p>
+                <p class="chat-empty-copy">Hold Space to talk in English or বাংলা, or type below. pi will plan, use tools in the workspace, and report back.</p>
+              </div>
+            </div>
+          </div>
+
+          <form class="chat-composer" id="chatForm">
+            <div class="composer-box">
+              <textarea id="chatInput" rows="1" placeholder="Message pi…" autocomplete="off" spellcheck="false"></textarea>
+              <button class="composer-send" id="chatSend" type="submit" aria-label="Send message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m5 12 14-7-4 14-3-6-7-1Z" />
+                </svg>
+              </button>
+            </div>
+            <div class="composer-foot">
+              <span><kbd>Enter</kbd> send · <kbd>Shift</kbd> + <kbd>Enter</kbd> newline</span>
+              <span>Workspace tools are approval-gated</span>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>LFM3-Audio-2B · llama.cpp</span>
+        <span class="footer-dot"></span>
+        <span>pi · <span id="footerModel">beam:cloud</span></span>
+        <span class="footer-dot"></span>
+        <span>Approval-gated tools</span>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop" id="approvalModal" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="approvalTitle">
+        <div class="modal-head">
+          <div>
+            <span class="eyebrow">Approval needed</span>
+            <h2 id="approvalTitle">pi wants to run a tool</h2>
+          </div>
+          <span class="tool-badge" id="approvalTool">bash</span>
+        </div>
+        <div class="approval-detail" id="approvalDetail"></div>
+        <label class="remember">
+          <input type="checkbox" id="approvalRemember" />
+          Always allow this tool for the current run
+        </label>
+        <div class="modal-actions">
+          <button class="ghost" id="denyButton" type="button">Deny</button>
+          <button class="allow" id="allowButton" type="button">Allow</button>
+        </div>
+        <p class="modal-note">The command is paused until you decide. Closing this dialog denies it.</p>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
